@@ -9,4 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class {{ class }} extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $guarded = [];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 }
