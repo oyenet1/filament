@@ -26,7 +26,7 @@ return new class extends Migration
             $table->json('hobbies')->nullable();
             $table->string('status')->nullable()->default('active');
             $table->string('reg_class')->nullable();
-            $table->foreignIdFor(Institution::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Institution::class)->nullable()->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

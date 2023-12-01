@@ -4,17 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Traits\HasOneProfile;
 use Filament\Panel;
+use App\Traits\HasOneProfile;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\HasTenants;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements HasTenants
 {
@@ -70,5 +71,23 @@ class User extends Authenticatable implements HasTenants
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->institutions->contains($tenant);
+    }
+
+    static function boot()
+    {
+        parent::boot();
+        self::creating(function ($user) {
+            // create unique id for user
+            $user->school_id = IdGenerator::generate(['table' => 'users', 'field' => 'school_id', 'length' => 7, 'reset_on_prefix_change' => true, 'prefix' => userNameAbbr($user->current_role) . date('y')]);;
+        });
+
+
+        self::created(function ($user) {
+            // create profile alongside user
+            $user->profile()->create();
+
+            // automatically associte the user with school
+            $user->institutions()->attach($user->current_institution_id);
+        });
     }
 }

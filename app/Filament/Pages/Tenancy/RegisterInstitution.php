@@ -25,8 +25,16 @@ class RegisterInstitution extends RegisterTenant
                     ->unique(),
                 TextInput::make('slug')
                     ->unique(),
+                TextInput::make('phone')
+                    ->unique(),
+                TextInput::make('logo')
+                    ->required(),
+                TextInput::make('email')
+                    ->unique()
+                    ->required(),
                 TextInput::make('domain')
-                    ->nullable(),
+                    ->nullable()
+                    ->unique(),
                 // ...
             ]);
     }

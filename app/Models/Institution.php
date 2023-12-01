@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -15,5 +16,10 @@ class Institution extends Model
     function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
     }
 }

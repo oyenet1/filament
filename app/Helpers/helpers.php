@@ -154,6 +154,20 @@ function userNameAbbr($pre): string
         return "ADM";
     } else if ($pre == "superadmin") {
         return "SUP";
+    } else if ($pre == "teacher") {
+        return "tchr";
+    } else if ($pre == "class teacher") {
+        return "CT";
+    } else if ($pre == "human resources") {
+        return "HR";
+    } else if ($pre == "guardian") {
+        return "GDN";
+    } else if ($pre == "accountant") {
+        return "ACCT";
+    } else if ($pre == "librarian") {
+        return "LIBN";
+    } else if ($pre == "receptionist") {
+        return "FD";
     } else {
         return "ST";
     }
