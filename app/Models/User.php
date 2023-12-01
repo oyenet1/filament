@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\HasOneProfile;
 use Filament\Panel;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Collection;
@@ -12,10 +14,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements HasTenants
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, SoftDeletes, HasOneProfile,  Notifiable;
 
 
     /**
@@ -25,6 +28,9 @@ class User extends Authenticatable implements HasTenants
      */
     protected $fillable = [
         'name',
+        'title',
+        'school_id',
+        'current_role',
         'email',
         'password',
     ];

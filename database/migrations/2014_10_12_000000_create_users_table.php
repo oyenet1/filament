@@ -15,9 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('title')->nullable();
+            $table->string('school_id')->unique();
+            $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('current_institution_id')->nullable()->constrained('institutions')->nullOnDelete();
+            $table->integer('current_role')->nullable()->constrained('roles')->nullOnDelete();
+            $table->string('password');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
