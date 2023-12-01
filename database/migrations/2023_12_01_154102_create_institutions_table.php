@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Institution;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -20,6 +22,13 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+        Schema::create('institution_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Institution::class)->constrained()->cascadeOnDelete();
+            $table->softDeletes();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -28,5 +37,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('institutions');
+        Schema::dropIfExists('institution_user');
     }
 };
