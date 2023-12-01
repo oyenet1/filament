@@ -59,6 +59,8 @@ class User extends Authenticatable implements HasTenants
         return $this->belongsToMany(Institution::class);
     }
 
+
+
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->institutions->contains($tenant);

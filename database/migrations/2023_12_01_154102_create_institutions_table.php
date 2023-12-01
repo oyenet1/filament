@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('domain')->nullable();
+            $table->string('domain')->nullable()->unique();
             $table->string('status')->nullable()->default('active');
             $table->softDeletes();
             $table->timestamps();
