@@ -4,7 +4,7 @@
 
 namespace App\Filament\Pages\Tenancy;
 
-use App\Models\Institution;
+use App\Models\School;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
@@ -39,12 +39,12 @@ class RegisterSchool extends RegisterTenant
             ]);
     }
 
-    protected function handleRegistration(array $data): Institution
+    protected function handleRegistration(array $data): School
     {
-        $institution = Institution::create($data);
+        $school = School::create($data);
 
-        $institution->members()->attach(auth()->user());
+        $school->members()->attach(auth()->user());
 
-        return $institution;
+        return $school;
     }
 }
