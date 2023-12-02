@@ -30,7 +30,7 @@ class User extends Authenticatable implements HasTenants
     protected $fillable = [
         'name',
         'title',
-        'school_id',
+        'username',
         'current_role',
         'email',
         'password',
@@ -78,7 +78,7 @@ class User extends Authenticatable implements HasTenants
         parent::boot();
         self::creating(function ($user) {
             // create unique id for user
-            $user->school_id = IdGenerator::generate(['table' => 'users', 'field' => 'school_id', 'length' => 7, 'reset_on_prefix_change' => true, 'prefix' => userNameAbbr($user->current_role) . date('y')]);;
+            $user->username = IdGenerator::generate(['table' => 'users', 'field' => 'username', 'length' => 7, 'reset_on_prefix_change' => true, 'prefix' => userNameAbbr($user->current_role) . date('y')]);;
         });
 
 
