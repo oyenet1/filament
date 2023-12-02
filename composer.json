@@ -16,7 +16,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.2",
-        "nnjeim/world": "^1.1"
+        "nnjeim/world": "^1.1",
+        "spatie/laravel-permission": "^6.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

@@ -8,6 +8,7 @@ use Filament\Panel;
 use App\Traits\HasOneProfile;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\HasTenants;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements HasTenants
 {
-    use HasApiTokens, HasFactory, SoftDeletes, HasOneProfile,  Notifiable;
+    use HasRoles, HasApiTokens, HasFactory, SoftDeletes, HasOneProfile,  Notifiable;
 
 
     /**
