@@ -32,7 +32,9 @@ class User extends Authenticatable implements HasTenants
         'title',
         'username',
         'current_role',
+        'current_school_id',
         'email',
+        'phone',
         'password',
     ];
 
@@ -58,19 +60,19 @@ class User extends Authenticatable implements HasTenants
 
     public function getTenants(Panel $panel): Collection
     {
-        return $this->institutions;
+        return $this->schools;
     }
 
-    public function institutions(): BelongsToMany
+    public function schools(): BelongsToMany
     {
-        return $this->belongsToMany(Institution::class);
+        return $this->belongsToMany(School::class);
     }
 
 
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->institutions->contains($tenant);
+        return $this->schools->contains($tenant);
     }
 
     static function boot()
@@ -87,7 +89,7 @@ class User extends Authenticatable implements HasTenants
             $user->profile()->create();
 
             // automatically associte the user with school
-            $user->institutions()->attach($user->current_institution_id);
+            $user->schools()->attach($user->current_school_id);
         });
     }
 }
