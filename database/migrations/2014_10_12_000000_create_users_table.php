@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->integer('current_school_id')->nullable()->constrained('schools')->nullOnDelete();
+            $table->integer('school_id')->nullable()->constrained('schools')->nullOnDelete();
             $table->string('current_role')->nullable()->constrained('roles')->nullOnDelete();
             $table->string('password');
             $table->rememberToken();

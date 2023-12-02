@@ -32,7 +32,7 @@ class User extends Authenticatable implements HasTenants
         'title',
         'username',
         'current_role',
-        'current_school_id',
+        'school_id',
         'email',
         'phone',
         'password',
@@ -89,7 +89,7 @@ class User extends Authenticatable implements HasTenants
             $user->profile()->create();
 
             // automatically associte the user with school
-            $user->schools()->attach($user->current_school_id);
+            $user->schools()->attach($user->school_id);
         });
     }
 }
