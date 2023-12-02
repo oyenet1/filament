@@ -87,10 +87,15 @@ class User extends Authenticatable implements HasTenants
 
         self::created(function ($user) {
             // create profile alongside user
-            $user->profile()->create();
+            $user->profile()->create(['school_id' => $user->school_id]);
 
             // automatically associte the user with school
             $user->schools()->attach($user->school_id);
+
+            // attach role when creating as well
+            if ($user->current_role) {
+                $user->assignRole($user->current_role);
+            }
         });
     }
 }

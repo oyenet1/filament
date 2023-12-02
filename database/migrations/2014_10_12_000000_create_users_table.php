@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('school_id')->nullable()->constrained('schools')->nullOnDelete();
             $table->string('current_role')->nullable()->constrained('roles')->nullOnDelete();
             $table->string('password');
+            $table->string('status')->nullable()->default('active');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

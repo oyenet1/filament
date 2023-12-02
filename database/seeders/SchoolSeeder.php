@@ -23,14 +23,14 @@ class SchoolSeeder extends Seeder
         School::create([
             'name' => fake()->unique()->company() . " School",
             'domain' => fake()->domainName(),
-            'slug' => fake()->slug(6),
+            'slug' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
         ]);
         School::create([
             'name' => fake()->unique()->company() . " School",
             'domain' => fake()->domainName(),
-            'slug' => fake()->slug(6),
+            'slug' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
         ]);
