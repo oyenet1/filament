@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Institution extends Model
+class School extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -16,10 +16,5 @@ class Institution extends Model
     function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
-    }
-
-    function institution(): BelongsTo
-    {
-        return $this->belongsTo(Institution::class);
     }
 }

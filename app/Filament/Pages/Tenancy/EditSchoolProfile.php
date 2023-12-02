@@ -7,7 +7,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Tenancy\EditTenantProfile;
 use Illuminate\Database\Eloquent\Model;
 
-class EditInstitutionProfile extends EditTenantProfile
+class EditSchoolProfile extends EditTenantProfile
 {
     public static function getLabel(): string
     {

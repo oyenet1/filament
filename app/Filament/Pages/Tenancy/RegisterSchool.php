@@ -10,7 +10,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
 use Illuminate\Database\Eloquent\Model;
 
-class RegisterInstitution extends RegisterTenant
+class RegisterSchool extends RegisterTenant
 {
     public static function getLabel(): string
     {

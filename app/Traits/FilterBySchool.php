@@ -2,15 +2,15 @@
 
 namespace App\Traits;
 
-use App\Models\Institution;
+use App\Models\School;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-trait FilterByInstitution
+trait FilterBySchool
 {
-    function Institution(): BelongsTo
+    function school(): BelongsTo
     {
-        return $this->belongsTo(Institution::class);
+        return $this->belongsTo(School::class);
     }
 
     public static function boot()
@@ -18,11 +18,11 @@ trait FilterByInstitution
         parent::boot();
 
         self::creating(function ($model) {
-            $model->Institution_id =  auth()->user()->current_institution_id;
+            $model->school_id =  auth()->user()->current_school_id;
         });
 
         // self::addGlobalScope(function (Builder $builder) {
-        //     $builder->where('Institution_id', auth()->user()->current_Institution_id);
+        //     $builder->where('School_id', auth()->user()->current_School_id);
         // });
     }
 }

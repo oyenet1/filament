@@ -2,32 +2,32 @@
 
 namespace Database\Seeders;
 
-use App\Models\Institution;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\School;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class InstitutionSeeder extends Seeder
+class SchoolSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Institution::create([
+        School::create([
             'name' => "Bonifade International School",
             'domain' => "bonifade",
             'slug' => "bonifade",
             'phone' => "7065720177",
             'email' => "info@bonifade.com",
         ]);
-        Institution::create([
+        School::create([
             'name' => fake()->unique()->company() . " School",
             'domain' => fake()->domainName(),
             'slug' => fake()->slug(6),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
         ]);
-        Institution::create([
+        School::create([
             'name' => fake()->unique()->company() . " School",
             'domain' => fake()->domainName(),
             'slug' => fake()->slug(6),

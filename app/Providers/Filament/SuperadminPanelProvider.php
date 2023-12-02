@@ -5,15 +5,15 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
-use App\Models\Institution;
+use App\Models\School;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use App\Filament\Pages\Tenancy\RegisterInstitution;
+use App\Filament\Pages\Tenancy\RegisterSchool;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use App\Filament\Pages\Tenancy\EditInstitutionProfile;
+use App\Filament\Pages\Tenancy\EditSchoolProfile;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -59,8 +59,8 @@ class SuperadminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->tenant(Institution::class, ownershipRelationship: 'institution', slugAttribute: 'slug')
-            ->tenantRegistration(RegisterInstitution::class)
-            ->tenantProfile(EditInstitutionProfile::class);
+            ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'slug')
+            ->tenantRegistration(RegisterSchool::class)
+            ->tenantProfile(EditSchoolProfile::class);
     }
 }
