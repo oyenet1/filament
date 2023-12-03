@@ -186,3 +186,24 @@ function isTimeToRenew($com)
     $diff = date_diff(now(), $date2);
     return intval($diff->format("%R%a"));
 }
+
+function generateUniqueSchoolCode(string $input): string
+{
+    // Split the input into words
+    $words = explode(' ', $input);
+
+    // Initialize an empty abbreviation
+    $abbreviation = '';
+
+    // Take the first letter of each word and append to the abbreviation
+    foreach ($words as $word) {
+        $abbreviation .= strtoupper(substr($word, 0, 1));
+    }
+
+    // If the abbreviation is longer than three characters, truncate to three characters
+    if (strlen($abbreviation) > 3) {
+        $abbreviation = substr($abbreviation, 0, 3);
+    }
+
+    return $abbreviation;
+}

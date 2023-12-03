@@ -9,11 +9,14 @@ use App\Models\School;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Tenancy\RegisterSchool;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use App\Filament\Pages\Tenancy\EditSchoolProfile;
+use App\Filament\Superadmin\Resources\SettingResource;
+use App\Models\Setting;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -34,6 +37,7 @@ class SuperadminPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->profile()
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -55,11 +59,21 @@ class SuperadminPanelProvider extends PanelProvider
                     ->visible(fn (): bool => auth()->user()->can('create school')),
                 'profile' => MenuItem::make()
                     ->label('Edit School Profile')
-                    ->visible(fn (): bool => auth()->user()->can('update school')),
+                    ->visible(fn (): bool => auth()->user()->can('update school settings')),
                 // MenuItem::make()
                 //     ->label('Settings')
                 //     ->url("/settings")
                 //     ->icon('heroicon-m-cog-8-tooth')
+            ])
+            ->navigationItems([
+                // NavigationItem::make('School Setting')
+                //     ->url(fn (): string => SettingResource::getUrl())
+                //     ->label('School Settings')
+                //     ->group('Configuration')
+                //     ->icon('heroicon-o-cog-6-tooth')
+                //     ->isActiveWhen(fn () => request()->routeIs('filament.superadmin.resources.settings.index'))
+                //     ->visible(fn (): bool => auth()->user()->can('create school settings'))
+                // ...
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -78,7 +92,7 @@ class SuperadminPanelProvider extends PanelProvider
             ->tenantMiddleware([
                 // ...
             ], isPersistent: true)
-            ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'slug')
+            ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'code')
             ->tenantRegistration(RegisterSchool::class)
             ->tenantProfile(EditSchoolProfile::class);
     }

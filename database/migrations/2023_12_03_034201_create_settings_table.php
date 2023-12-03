@@ -1,9 +1,10 @@
 <?php
 
-use App\Models\Institution;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\School;
+use Nnjeim\World\Models\City;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -14,8 +15,14 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignIdFor(Institution::class)->constrained()->cascadeOnDelete();
+            $table->string('staff_prefix')->nullable();
+            $table->string('student_prefix')->nullable();
+            $table->string('parent_prefix')->nullable();
+            $table->integer('sms_unit')->nullable();
+            $table->foreignIdFor(City::class)->nullable()->constrained()->nullOnDelete();
+            $table->string('color')->nullable();
+            $table->string('paystack_pk')->nullable();
+            $table->foreignIdFor(School::class)->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

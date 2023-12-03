@@ -41,7 +41,7 @@ class PermissionSeeder extends Seeder
             ],
             "admin" => [
                 "school" => ['r'],
-                "school settings" => ['c', 'r', 'u'],
+                "school settings" => ['r', 'u'],
                 "user" => ['c', 'r', 'u',],
                 "role" => ['r', 'u'],
                 "academic year" => ['c', 'r', 'u', 'd'],
