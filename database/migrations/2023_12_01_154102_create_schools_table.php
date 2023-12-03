@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('logo')->nullable();
+            $table->string('avatar_url')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable()->unique();
             $table->string('domain')->nullable()->unique();
