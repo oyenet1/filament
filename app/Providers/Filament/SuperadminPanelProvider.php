@@ -75,6 +75,9 @@ class SuperadminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->tenantMiddleware([
+                // ...
+            ], isPersistent: true)
             ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'slug')
             ->tenantRegistration(RegisterSchool::class)
             ->tenantProfile(EditSchoolProfile::class);
