@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSetting extends CreateRecord
 {
     protected static string $resource = SettingResource::class;
+
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->can('create school settings'), 403);
+    }
 }

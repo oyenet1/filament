@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Configuration;
 use App\Models\Journey;
+use App\Models\Configuration;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
@@ -206,4 +207,9 @@ function generateUniqueSchoolCode(string $input): string
     }
 
     return $abbreviation;
+}
+
+function getCurrentTenant()
+{
+    return Filament::getTenant();
 }

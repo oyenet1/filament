@@ -7,11 +7,12 @@ use Filament\Models\Contracts\HasAvatar;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Filament\Models\Contracts\HasCurrentTenantLabel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class School extends Model implements HasAvatar
+class School extends Model implements HasAvatar, HasCurrentTenantLabel
 {
     use HasFactory, SoftDeletes;
 

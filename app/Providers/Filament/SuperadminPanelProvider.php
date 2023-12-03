@@ -9,14 +9,12 @@ use App\Models\School;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
-use Filament\Navigation\NavigationItem;
 use Filament\Http\Middleware\Authenticate;
+use Filament\Pages\Tenancy\EditTenantProfile;
 use App\Filament\Pages\Tenancy\RegisterSchool;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use App\Filament\Pages\Tenancy\EditSchoolProfile;
-use App\Filament\Superadmin\Resources\SettingResource;
-use App\Models\Setting;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -52,6 +50,14 @@ class SuperadminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+            ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()->label('Edit profile'),
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url(fn () => "/" . getCurrentTenant()?->code . "/settings")
+                    ->icon('heroicon-o-cog-8-tooth')
+                    ->visible(fn () => auth()->user()->can('create school settings'))
             ])
             ->tenantMenuItems([
                 'register' => MenuItem::make()

@@ -22,6 +22,10 @@ class SettingResource extends Resource
     protected static ?string $navigationGroup = 'Configuration';
     protected static ?string $navigationLabel = 'School Settings';
 
+    protected static bool $isScopedToTenant = false; //tenancy not applied
+
+
+    // show navigation based on permissions
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->user()->can('create school settings');
