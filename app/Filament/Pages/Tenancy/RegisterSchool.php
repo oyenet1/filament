@@ -51,7 +51,7 @@ class RegisterSchool extends RegisterTenant
                         ]),
                     \Filament\Forms\Components\Wizard\Step::make('Logo')
                         ->schema([
-                            FileUpload::make('logo')
+                            FileUpload::make('avatar_url')
                                 ->directory('school/logos')
                                 ->nullable()
                                 ->image()

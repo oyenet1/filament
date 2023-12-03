@@ -23,4 +23,9 @@ class School extends Model implements HasAvatar
     {
         return $this->avatar_url;
     }
+
+    public function getCurrentTenantLabel(): string
+    {
+        return 'Active School';
+    }
 }
