@@ -31,7 +31,7 @@ class SuperadminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('superadmin')
-            // ->path('superadmin')
+            ->path('')
             ->login()
             ->passwordReset()
             ->profile()

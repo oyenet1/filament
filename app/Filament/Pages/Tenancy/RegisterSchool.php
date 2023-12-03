@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class RegisterSchool extends RegisterTenant
 {
@@ -52,11 +53,22 @@ class RegisterSchool extends RegisterTenant
                     \Filament\Forms\Components\Wizard\Step::make('Logo')
                         ->schema([
                             FileUpload::make('avatar_url')
-                                ->directory('school/logos')
                                 ->nullable()
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                                        ->prepend('logo-'),
+                                )
+                                ->directory('school/logos')
                                 ->image()
                                 ->imageEditor()
-                                ->maxSize(2014),
+                                ->imageEditorAspectRatios([
+                                    null,
+                                    '1:1',
+                                ])
+                                ->maxSize(2014)
+                                ->avatar()
+                                ->circleCropper()
+                                ->imageResizeMode('cover'),
                         ])
                 ])->columnSpanFull()
 
