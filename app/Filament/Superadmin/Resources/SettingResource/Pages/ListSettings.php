@@ -33,6 +33,7 @@ class ListSettings extends ListRecords
             'inactive' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "inactive")),
             'expired' => Tab::make()
+
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "expired")),
             'disabled' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "disabled")),
