@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('student_prefix')->nullable();
             $table->string('parent_prefix')->nullable();
             $table->integer('sms_unit')->nullable();
-            $table->foreignIdFor(City::class)->nullable()->constrained()->nullOnDelete();
             $table->string('color')->nullable();
             $table->string('paystack_pk')->nullable();
             $table->foreignIdFor(School::class)->constrained()->cascadeOnDelete();

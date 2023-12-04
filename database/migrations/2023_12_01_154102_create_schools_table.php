@@ -1,10 +1,13 @@
 <?php
 
-use App\Models\School;
 use App\Models\User;
+use App\Models\School;
+use Nnjeim\World\Models\City;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
 
 return new class extends Migration
 {
@@ -22,6 +25,9 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable()->unique();
             $table->string('domain')->nullable()->unique();
+            $table->text('address')->nullable();
+            $table->foreignIdFor(State::class)->nullable()->default(2957)->constrained()->nullOnDelete();
+            $table->foreignIdFor(City::class)->nullable()->default(78980)->constrained()->nullOnDelete();
             $table->string('status')->nullable()->default('active');
             $table->softDeletes();
             $table->timestamps();

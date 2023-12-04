@@ -5,11 +5,21 @@ namespace App\Filament\Superadmin\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\School;
+use App\Models\Setting;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Nnjeim\World\Models\City;
+use Nnjeim\World\Models\State;
 use Filament\Resources\Resource;
+use Nnjeim\World\Models\Country;
+use Illuminate\Support\Collection;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Components\Tab;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -43,35 +53,93 @@ class SettingResource extends Resource
         return $form
             ->schema([
                 \Filament\Forms\Components\Group::make([
-                    \Filament\Forms\Components\Section::make('Name')
-                        ->schema([
-                            TextInput::make('name')
-                                ->debounce(2000)
-                                ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                    Forms\Components\Wizard::make([
+                        Forms\Components\Wizard\Step::make('School Details')
+                            ->schema([
+                                Fieldset::make('School Bio')
+                                    ->schema([
+                                        TextInput::make('name')
+                                            ->debounce()
+                                            ->required()
+                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
-                            TextInput::make('slug')
-                                ->dehydrated()
-                                ->readonly()
-                                ->unique(School::class, 'slug', fn ($record) => $record),
-                        ]),
-                ]),
-                \Filament\Forms\Components\Group::make([
-                    \Filament\Forms\Components\Section::make('Contant Details')
-                        ->schema([
+                                        TextInput::make('slug')
+                                            ->dehydrated()
+                                            ->hidden()
+                                            ->readonly()
+                                            ->unique(School::class, 'slug', fn ($record) => $record),
+                                        TextInput::make('phone')
+                                            ->required()
+                                            ->unique(ignoreRecord: true),
 
-                            TextInput::make('phone')
-                                ->unique(),
+                                        TextInput::make('email')
+                                            ->unique(ignoreRecord: true)
+                                            ->required()
+                                            ->email(),
 
-                            TextInput::make('email')
-                                ->unique()
-                                ->required(),
+                                        TextInput::make('domain')
+                                            ->nullable()
+                                            ->unique(ignoreRecord: true),
+                                    ])->columns(4),
+                                Fieldset::make('School Code Prefix')
+                                    ->relationship('setting')
+                                    ->schema([
+                                        TextInput::make('staff_prefix')
+                                            ->nullable(),
+                                        TextInput::make('parent_prefix')
+                                            ->nullable(),
+                                        TextInput::make('student_prefix')
+                                            ->nullable(),
 
-                            TextInput::make('domain')
+                                    ])->columns(4),
+
+                            ])->columns(4),
+                        Forms\Components\Wizard\Step::make('Address')->schema([
+                            Select::make('country_id')
+                                ->label('Country')
+                                ->preload()
+                                ->options(Country::all()->pluck('name', 'id'))
+                                ->searchable()
+                                ->placeholder('Nigeria')
                                 ->nullable()
-                                ->unique(),
+                                ->live()
+                                ->native(false)
+                                ->afterStateUpdated(function (Set $set) {
+                                    $set('state_id', null);
+                                    $set('city_id', null);
+                                }),
+                            Select::make('state_id')
+                                ->label('State')
+                                ->relationship(name: 'state', titleAttribute: 'name')
+                                ->options(fn (Get $get): Collection
+                                => State::query()
+                                    ->where('country_id', $get('country_id'))
+                                    ->pluck('name', 'id', 'country_id'))
+                                ->searchable(['name'])
+                                ->nullable()
+                                ->preload()
+                                ->native(false)
+                                ->live()
+                                ->afterStateUpdated(fn (Set $set) => $set('city_id', null)),
+                            Select::make('city_id')
+                                ->label('City/Town')
+                                ->relationship(name: 'city', titleAttribute: 'name')
+                                ->options(fn (Get $get): Collection
+                                => City::query()
+                                    ->where('country_id', $get('country_id'))
+                                    ->where('state_id', $get('state_id'))
+                                    ->pluck('name', 'id', 'state_id'))
+                                ->searchable(['name'])
+                                ->nullable()
+                                ->helperText("if you can'\t find your town/city, select the nearest city. Also contact us via email,phone and chat")
+                                ->preload()
+                                ->live()
+                                ->native(false),
+
+                            TextInput::make('address')
+                                ->nullable(),
                         ]),
-                    \Filament\Forms\Components\Section::make('Logo')
-                        ->schema([
+                        Forms\Components\Wizard\Step::make('Logo')->schema([
                             FileUpload::make('avatar_url')
                                 ->label('LOGO')
                                 ->nullable()
@@ -90,7 +158,8 @@ class SettingResource extends Resource
                                 ->circleCropper()
                                 ->imageResizeMode('cover'),
                         ])
-                ])->columns(2)
+                    ])->columns(4)
+                ])->columnSpanFull(),
 
             ]);
     }
@@ -107,12 +176,25 @@ class SettingResource extends Resource
                     ->label("NAME")->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label("TELEPHONE"),
+                    ->label("TELEPHONE")->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label("EMAIL"),
+                    ->label("EMAIL")->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('city.country.name')
+                    ->label("Location")
+                    ->searchable()
+                    ->default(function (Set $set) {
+                        return  $set('city.country.name');
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label("DATE")
+                    ->label("COMMENCE ON")
                     ->date(),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label("STATUS"),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -124,29 +206,31 @@ class SettingResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    "Restored Back" => Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
 
-    public function getTabs(): array
+    public static function getEloquentQuery(): Builder
     {
-        return [
-            'all' => Tab::make(),
-            'active' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "active")),
-            'inactive' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "inactive")),
-            'expired' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "expired")),
-            'disabled' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "disabled")),
-        ];
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
+
 
     public static function getRelations(): array
     {

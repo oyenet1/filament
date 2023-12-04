@@ -11,10 +11,15 @@ use Filament\Models\Contracts\HasCurrentTenantLabel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Nnjeim\World\Models\City;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
 
 class School extends Model implements HasAvatar, HasCurrentTenantLabel
 {
     use HasFactory, SoftDeletes;
+
+    protected $guarded = ["country_id"];
 
 
     function members(): BelongsToMany
@@ -35,6 +40,14 @@ class School extends Model implements HasAvatar, HasCurrentTenantLabel
     function setting(): HasOne
     {
         return $this->hasOne(Setting::class);
+    }
+    function state(): BelongsTo
+    {
+        return $this->belongsTo(State::class);
+    }
+    function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 
     static function boot()

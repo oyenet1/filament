@@ -36,6 +36,7 @@ class User extends Authenticatable implements HasTenants
         'school_id',
         'email',
         'phone',
+        'status',
         'password',
     ];
 
