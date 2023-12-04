@@ -15,9 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('title')->nullable();
+            $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->integer('school_id')->nullable()->constrained('schools')->nullOnDelete();
+            $table->string('current_role')->nullable()->constrained('roles')->nullOnDelete();
             $table->string('password');
+            $table->string('status')->nullable()->default('active');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
