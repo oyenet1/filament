@@ -36,7 +36,7 @@ class SettingResource extends Resource
 
     protected static ?string $navigationGroup = 'Configuration';
     protected static ?string $navigationLabel = 'School Settings';
-    protected static ?string $modelLabel = 'Schools';
+    protected static ?string $modelLabel = 'School';
 
     protected static bool $isScopedToTenant = false; //tenancy not applied
 

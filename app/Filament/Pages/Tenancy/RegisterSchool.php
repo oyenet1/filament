@@ -28,7 +28,7 @@ class RegisterSchool extends RegisterTenant
                     \Filament\Forms\Components\Wizard\Step::make('Name')
                         ->schema([
                             TextInput::make('name')
-                                ->debounce(2000)
+                                ->debounce()
                                 ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
                             TextInput::make('slug')
@@ -58,7 +58,7 @@ class RegisterSchool extends RegisterTenant
                                     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
                                         ->prepend('logo-'),
                                 )
-                                ->directory('school/logos')
+                                ->directory('/school/logos')
                                 ->image()
                                 ->imageEditor()
                                 ->imageEditorAspectRatios([

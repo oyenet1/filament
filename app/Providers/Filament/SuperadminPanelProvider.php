@@ -31,7 +31,7 @@ class SuperadminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('superadmin')
-            ->path('')
+            ->path('superadmin')
             ->login()
             ->passwordReset()
             ->profile()
@@ -55,9 +55,14 @@ class SuperadminPanelProvider extends PanelProvider
                 'profile' => MenuItem::make()->label('Edit profile'),
                 MenuItem::make()
                     ->label('Settings')
-                    ->url(fn () => "/" . getCurrentTenant()?->code . "/settings")
+                    ->url(fn () => "/superadmin/" . getCurrentTenant()?->code . "/settings")
                     ->icon('heroicon-o-cog-8-tooth')
-                    ->visible(fn () => auth()->user()->can('create school settings'))
+                    ->visible(fn () => auth()->user()->can('create school settings')),
+                MenuItem::make()
+                    ->label('Switch to Admin')
+                    ->url("/admin")
+                    ->icon('heroicon-m-user')
+                    ->visible(fn () => auth()->user()->hasRole('admin')),
             ])
             ->tenantMenuItems([
                 'register' => MenuItem::make()
@@ -66,10 +71,6 @@ class SuperadminPanelProvider extends PanelProvider
                 'profile' => MenuItem::make()
                     ->label('Edit School Profile')
                     ->visible(fn (): bool => auth()->user()->can('update school settings')),
-                // MenuItem::make()
-                //     ->label('Settings')
-                //     ->url("/settings")
-                //     ->icon('heroicon-m-cog-8-tooth')
             ])
             ->navigationItems([
                 // NavigationItem::make('School Setting')
@@ -96,7 +97,7 @@ class SuperadminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->tenantMiddleware([
-                // ...
+                'role:super-admin',
             ], isPersistent: true)
             ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'code')
             ->tenantRegistration(RegisterSchool::class)

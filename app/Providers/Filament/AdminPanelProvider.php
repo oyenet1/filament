@@ -6,10 +6,12 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -42,6 +44,19 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()->label('Edit profile'),
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url(fn () => "/superadmin/" . getCurrentTenant()?->code . "/settings")
+                    ->icon('heroicon-o-cog-8-tooth')
+                    ->visible(fn () => auth()->user()->can('create school settings')),
+                MenuItem::make()
+                    ->label('Superadmin')
+                    ->url("/superadmin")
+                    ->icon('heroicon-m-user')
+                    ->visible(fn () => auth()->user()->hasRole('super-admin')),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -53,6 +68,9 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->tenantMiddleware([
+                'role:admin,super-admin',
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);
