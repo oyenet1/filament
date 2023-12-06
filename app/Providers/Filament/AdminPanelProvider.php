@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
+use App\Models\School;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
@@ -12,6 +13,7 @@ use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Filament\Pages\Tenancy\EditSchoolProfile;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -57,6 +59,14 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-m-user')
                     ->visible(fn () => auth()->user()->hasRole('super-admin')),
             ])
+            ->tenantMenuItems([
+                'register' => MenuItem::make()
+                    ->label('Add New School')
+                    ->visible(fn (): bool => auth()->user()->can('create school')),
+                'profile' => MenuItem::make()
+                    ->label('Edit School Profile')
+                    ->visible(fn (): bool => auth()->user()->can('update school settings')),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -68,11 +78,12 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->tenantMiddleware([
-                'role:admin,super-admin',
-            ], isPersistent: true)
+            ->tenantMiddleware([], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+                'role:admin|super-admin',
+            ])
+            ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'code')
+            ->tenantProfile(EditSchoolProfile::class);
     }
 }
