@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/tes', function () {
+    return DB::table('schools')
+        ->where('status', 'active')
+        ->selectRaw('YEAR(created_at) as year, COUNT(*) as total')
+        ->groupByRaw('YEAR(created_at)')->orderBy('year')
+        ->pluck('total', 'year')->toArray();
 });
 
 // Route::get('/login', function () {

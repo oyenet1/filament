@@ -3,6 +3,7 @@
 use App\Models\Journey;
 use App\Models\Configuration;
 use Filament\Facades\Filament;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
@@ -21,17 +22,6 @@ function getCountries()
 function redirectback()
 {
     return redirect()->back();
-}
-
-
-function currentUserPermissions(): array|null
-{
-    $permissions = \App\Models\Permission::select('name')
-        ->whereRelation('users', 'id', Auth::id())
-        ->orWhereRelation('roles', 'id', auth()->user()->current_role)
-        ->pluck('name')
-        ->toArray();
-    return $permissions;
 }
 
 
@@ -78,30 +68,6 @@ function statusColor($status)
     }
 
     return $color;
-}
-
-function charges($val = "transport")
-{
-    $charge = Configuration::latest()->first();
-    $val = $charge->transport_charge;
-    switch ($val) {
-        case 'waybill':
-            $val = $charge->waybill_charge / 100;
-            break;
-        case 'workers':
-            $val = $charge->workers_charge;
-            break;
-        case 'vendors':
-            $val = $charge->vendors_charge;
-            break;
-        case 'loaders':
-            $val = $charge->loaders_charge;
-            break;
-        default:
-            $val = $charge->transport_charge / 100;
-            break;
-    }
-    return $val;
 }
 
 function nigeriaState(): array
@@ -212,4 +178,93 @@ function generateUniqueSchoolCode(string $input): string
 function getCurrentTenant()
 {
     return Filament::getTenant();
+}
+
+function formatNumber($number)
+{
+    if ($number >= 1000000) {
+        // If the number is a million or more
+        return $number / 1000000 . "M";
+    } elseif ($number >= 1000) {
+        // If the number is a thousand or more
+        return $number / 1000 . "K";
+    } else {
+        // If the number is less than a thousand
+        return $number;
+    }
+}
+
+function annualActiveSchoolCount(): ?array
+{
+    return DB::table('schools')
+        ->where('status', 'active')
+        ->selectRaw('YEAR(created_at) as year, COUNT(*) as total')
+        ->groupByRaw('YEAR(created_at)')->orderBy('year')
+        ->pluck('total', 'year')->toArray();
+}
+function schoolChart(): ?array
+{
+    return DB::table('schools')->selectRaw('YEAR(created_at) as year, COUNT(*) as total')
+        ->groupByRaw('YEAR(created_at)')->orderBy('year')
+        ->pluck('total')->toArray();
+}
+
+function activeSchoolChart(): ?array
+{
+    return DB::table('schools')
+        ->selectRaw('YEAR(created_at) as year, COUNT(*) as total')
+        ->where('status', 'active')
+        ->groupByRaw('YEAR(created_at)')
+        ->orderBy('year')
+        ->pluck('total')->toArray();
+}
+
+function getPercent($low, $high): ?string
+{
+    if ($low === 0) {
+        return $high > 0 ? "100% increase" : "0% change";
+    }
+
+    $percent = round(($high - $low) / abs($low) * 100);
+    $direction = ($high - $low) > 0 ? 'increase' : 'decrease';
+
+    return abs($percent) . "% " . $direction;
+}
+
+function getDirectionIcon($low, $high): ?string
+{
+    return $high > $low ? 'heroicon-o-arrow-trending-up' : 'heroicon-o-arrow-trending-down';
+}
+
+
+function generateHexColors($numColors)
+{
+    $colors = [];
+
+    for ($i = 0; $i < $numColors; $i++) {
+        $colors[] = '#' . substr(md5(rand()), 0, 6);
+    }
+
+    return $colors;
+}
+
+function generateColors($numColors)
+{
+    $rainbowColors = [
+        '#00FF00',  // Green
+        '#FFc500',  // Orange
+        '#0000FF',  // Blue
+        '#FF0000',  // Red
+        '#4B0082',  // Indigo
+        '#800080',  // Violet
+        '#dd9F00',  // Yellow
+    ];
+
+    $colors = [];
+
+    for ($i = 0; $i < $numColors; $i++) {
+        $colors[] = $rainbowColors[$i % 7];
+    }
+
+    return $colors;
 }
