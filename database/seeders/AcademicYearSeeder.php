@@ -16,7 +16,7 @@ class AcademicYearSeeder extends Seeder
         $terms = ["first", "second", "third"];
         for ($i = 20; $i > 0; $i--) {
             $year =    AcademicYear::create([
-                'name' => date('Y') - $i . "/" . date('y') - ($i + 1),
+                'name' => date('Y') - $i . "/" . date('y') - $i + 1,
                 'start' => now()->subYears($i),
                 'end' => now()->subYears($i)->addWeeks(random_int(45, 52)),
                 'school_id' => random_int(1, 3),
