@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\AcademicYear;
+use App\Observers\AcademicYearObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -28,5 +30,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::after(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;
         });
+
+        // observers
+        AcademicYear::observe(AcademicYearObserver::class);
     }
 }

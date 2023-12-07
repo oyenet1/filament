@@ -2,35 +2,53 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AcademicYearResource\Pages;
-use App\Filament\Resources\AcademicYearResource\RelationManagers;
-use App\Models\AcademicYear;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\AcademicYear;
+use Tables\Actions\SaveAction;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AcademicYearResource\Pages;
+use App\Filament\Resources\AcademicYearResource\RelationManagers;
 
 class AcademicYearResource extends Resource
 {
     protected static ?string $model = AcademicYear::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+
+    protected static ?string $navigationGroup = 'Academics';
+    protected static ?string $navigationLabel = 'Academic Year';
+    protected static ?string $modelLabel = 'Academic Year';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static int $getGlobalSearchResultsLimit = 20;
+
+
+    // show navigation based on permissions
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->can('create academic year');
+    }
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('school_id')
-                    ->relationship('school', 'name')
-                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('start'),
-                Forms\Components\DatePicker::make('end'),
+                Forms\Components\DatePicker::make('start')
+                    ->required()
+                    ->native(false),
+                Forms\Components\DatePicker::make('end')
+                    ->native(false),
                 Forms\Components\Toggle::make('is_current')
                     ->required(),
             ]);
@@ -40,9 +58,6 @@ class AcademicYearResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('school.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start')
@@ -66,20 +81,35 @@ class AcademicYearResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->successNotificationTitle('Acacdemic Year updated successfully'),
+                    Tables\Actions\DeleteAction::make()
+                        ->successNotificationTitle('Academic archived and will be deleted after 30 days'),
+                    Tables\Actions\ForceDeleteAction::make()
+                        ->label('Erase Permanently')
+                        ->successNotificationTitle('Academic Year permanently deleted'),
+                    Tables\Actions\RestoreAction::make(),
+                ])->button()
+                    ->label('Actions')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotificationTitle('Records archived and will be deleted after 30 days')
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\ForceDeleteBulkAction::make()
+                        ->label('Erase Permanently')
+                        ->successNotificationTitle('Academic Year records permanently deleted')
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->successNotificationTitle('Academic Year records has been restored')
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
@@ -97,5 +127,14 @@ class AcademicYearResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Academic Year' => $record->name,
+            'Term(s)' => $record->terms->count(),
+            'Current' => $record->is_current ? 'Yes' : 'No'
+        ];
     }
 }

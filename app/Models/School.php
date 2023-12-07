@@ -11,6 +11,7 @@ use Filament\Models\Contracts\HasCurrentTenantLabel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
@@ -35,6 +36,11 @@ class School extends Model implements HasAvatar, HasCurrentTenantLabel
     public function getCurrentTenantLabel(): string
     {
         return 'Active School';
+    }
+
+    function academicYears(): HasMany
+    {
+        return $this->hasMany(AcademicYear::class);
     }
 
     function setting(): HasOne

@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TermResource\Pages;
-use App\Filament\Resources\TermResource\RelationManagers;
-use App\Models\Term;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Term;
 use Filament\Tables;
+use Filament\Forms\Get;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\TermResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\TermResource\RelationManagers;
 
 class TermResource extends Resource
 {
@@ -52,6 +53,9 @@ class TermResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('academicYear.name')
                     ->numeric()
+                    ->searchable()
+                    ->default('Archived')
+                    ->color('#ff0000')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

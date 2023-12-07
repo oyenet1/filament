@@ -22,4 +22,9 @@ class AcademicYear extends Model
     {
         return $this->hasMany(Term::class);
     }
+
+    public function getAllRelations()
+    {
+        return $this->getRelations();
+    }
 }
