@@ -11,6 +11,7 @@ use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Pages\Tenancy\EditTenantProfile;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use App\Filament\Pages\Tenancy\RegisterSchool;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -64,6 +65,7 @@ class SuperadminPanelProvider extends PanelProvider
                     ->icon('heroicon-m-user')
                     ->visible(fn () => auth()->user()->hasRole('admin')),
             ])
+            ->tenantProfile(EditSchoolProfile::class)
             ->tenantMenuItems([
                 'register' => MenuItem::make()
                     ->label('Add New School')
@@ -97,9 +99,7 @@ class SuperadminPanelProvider extends PanelProvider
                 Authenticate::class,
                 'role:super-admin',
             ])
-            ->tenantMiddleware([], isPersistent: true)
             ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'code')
-            ->tenantRegistration(RegisterSchool::class)
-            ->tenantProfile(EditSchoolProfile::class);
+            ->tenantRegistration(RegisterSchool::class);
     }
 }

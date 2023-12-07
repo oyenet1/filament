@@ -22,6 +22,7 @@ use Filament\Forms\Components\Select;
 use Filament\Resources\Components\Tab;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
@@ -41,7 +42,10 @@ class SettingResource extends Resource
     protected static ?string $navigationLabel = 'School Settings';
     protected static ?string $modelLabel = 'School';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static bool $isScopedToTenant = false; //tenancy not applied
+    protected static int $getGlobalSearchResultsLimit = 20;
 
 
     // show navigation based on permissions
@@ -281,5 +285,34 @@ class SettingResource extends Resource
             'create' => Pages\CreateSetting::route('/create'),
             'edit' => Pages\EditSetting::route('/{record}/edit'),
         ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['city.country', 'state']);
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            // 'Name' =>  $record->name,
+            'Code' => $record->code,
+            'Address' => $record->city->name . " " . $record->state->name . " State, " . $record->city->country->name,
+            'Status' => $record->status
+        ];
+    }
+    // public static function getGlobalSearchResultActions(Model $record): array
+    // {
+    //     return [
+    //         'Name' =>  $record->name,
+    //         'Code' => $record->code,
+    //         'Country' => $record->city->country->name,
+    //         'Status' => $record->status
+    //     ];
+    // }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'code', 'city.country.name', 'city.name', 'state.name'];
     }
 }
