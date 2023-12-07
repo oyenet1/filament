@@ -10,6 +10,12 @@ class EditSetting extends EditRecord
 {
     protected static string $resource = SettingResource::class;
 
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'School Updated Successfuuly';
+    }
+
     protected function getHeaderActions(): array
     {
         return [

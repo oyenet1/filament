@@ -9,7 +9,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSetting extends CreateRecord
 {
     protected static string $resource = SettingResource::class;
-    protected static ?string $modelLabel = 'Add new School';
+    protected static ?string $modelLabel = 'Add New School';
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'School Created Successfuuly';
+    }
 
     public function mount(): void
     {

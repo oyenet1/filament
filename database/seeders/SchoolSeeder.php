@@ -16,21 +16,21 @@ class SchoolSeeder extends Seeder
         School::create([
             'name' => "Bonifade International School",
             'domain' => "bonifade",
-            'slug' => "bonifade",
+            'code' => "bonifade",
             'phone' => "7065720177",
             'email' => "info@bonifade.com",
         ]);
         School::create([
             'name' => fake()->unique()->company() . " School",
             'domain' => fake()->domainName(),
-            'slug' => fake()->slug(2),
+            'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
         ]);
         School::create([
             'name' => fake()->unique()->company() . " School",
             'domain' => fake()->domainName(),
-            'slug' => fake()->slug(2),
+            'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
         ]);

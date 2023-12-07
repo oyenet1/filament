@@ -28,13 +28,13 @@ class RegisterSchool extends RegisterTenant
                     \Filament\Forms\Components\Wizard\Step::make('Name')
                         ->schema([
                             TextInput::make('name')
-                                ->debounce()
-                                ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                                ->debounce(),
+                            // ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
-                            TextInput::make('slug')
-                                ->dehydrated()
-                                ->readonly()
-                                ->unique(School::class, 'slug', fn ($record) => $record),
+                            // TextInput::make('slug')
+                            //     ->dehydrated()
+                            //     ->readonly()
+                            //     ->unique(School::class, 'slug', fn ($record) => $record),
                         ]),
                     \Filament\Forms\Components\Wizard\Step::make('Contants')
                         ->schema([

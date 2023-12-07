@@ -19,7 +19,6 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
             $table->string('code')->unique();
             $table->string('avatar_url')->nullable();
             $table->string('email')->nullable()->unique();
@@ -28,7 +27,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->foreignIdFor(State::class)->nullable()->default(2957)->constrained()->nullOnDelete();
             $table->foreignIdFor(City::class)->nullable()->default(78980)->constrained()->nullOnDelete();
-            $table->string('status')->nullable()->default('active');
+            $table->string('status')->nullable()->default('Active');
             $table->softDeletes();
             $table->timestamps();
         });
