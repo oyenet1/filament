@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.2",
         "nnjeim/world": "^1.1",
+        "pxlrbt/filament-spotlight": "^1.0",
         "spatie/laravel-permission": "^6.1"
     },
     "require-dev": {
