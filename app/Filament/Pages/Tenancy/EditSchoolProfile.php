@@ -27,6 +27,10 @@ class EditSchoolProfile extends EditTenantProfile
         return 'School Profile Settings';
     }
 
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'School Updated Successfuuly';
+    }
 
 
     public function form(Form $form): Form
@@ -42,7 +46,7 @@ class EditSchoolProfile extends EditTenantProfile
                                         TextInput::make('name')
                                             ->debounce()
                                             ->required()
-                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                                            ->readonly(fn () => !auth()->user()->hasRole('super-admin')),
 
                                         TextInput::make('slug')
                                             ->dehydrated()
