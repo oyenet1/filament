@@ -4,19 +4,16 @@ namespace App\Filament\Resources\AcademicYearResource\Pages;
 
 use App\Filament\Resources\AcademicYearResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ManageRecords;
 
-class EditAcademicYear extends EditRecord
+class ManageAcademicYears extends ManageRecords
 {
     protected static string $resource = AcademicYearResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }

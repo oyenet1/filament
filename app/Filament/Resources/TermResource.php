@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AcademicYearResource\Pages;
-use App\Filament\Resources\AcademicYearResource\RelationManagers;
-use App\Models\AcademicYear;
+use App\Filament\Resources\TermResource\Pages;
+use App\Filament\Resources\TermResource\RelationManagers;
+use App\Models\Term;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AcademicYearResource extends Resource
+class TermResource extends Resource
 {
-    protected static ?string $model = AcademicYear::class;
+    protected static ?string $model = Term::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -26,11 +26,18 @@ class AcademicYearResource extends Resource
                 Forms\Components\Select::make('school_id')
                     ->relationship('school', 'name')
                     ->required(),
+                Forms\Components\Select::make('academic_year_id')
+                    ->relationship('academicYear', 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('start'),
-                Forms\Components\DatePicker::make('end'),
+                Forms\Components\DatePicker::make('start')
+                    ->required(),
+                Forms\Components\DatePicker::make('end')
+                    ->required(),
+                Forms\Components\TextInput::make('dso')
+                    ->numeric(),
                 Forms\Components\Toggle::make('is_current')
                     ->required(),
             ]);
@@ -43,6 +50,9 @@ class AcademicYearResource extends Resource
                 Tables\Columns\TextColumn::make('school.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('academicYear.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start')
@@ -50,6 +60,9 @@ class AcademicYearResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end')
                     ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('dso')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_current')
                     ->boolean(),
@@ -87,7 +100,7 @@ class AcademicYearResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageAcademicYears::route('/'),
+            'index' => Pages\ManageTerms::route('/'),
         ];
     }
 

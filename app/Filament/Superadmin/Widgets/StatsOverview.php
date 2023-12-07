@@ -2,8 +2,6 @@
 
 namespace App\Filament\Superadmin\Widgets;
 
-use App\Models\School;
-use Illuminate\Support\Facades\DB;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
