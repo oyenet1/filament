@@ -83,6 +83,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 'role:admin|super-admin',
             ])
+            ->tenantMiddleware([], isPersistent: true)
             ->tenant(School::class, ownershipRelationship: 'school', slugAttribute: 'code')
             ->tenantProfile(EditSchoolProfile::class);
     }
