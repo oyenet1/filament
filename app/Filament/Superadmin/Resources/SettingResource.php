@@ -198,10 +198,10 @@ class SettingResource extends Resource
                     ->badge()
                     ->extraAttributes(['class' => 'capitalize'])
                     ->color(fn (string $state): string => match ($state) {
-                        'Active' => 'success',
-                        'Inactive' => 'warning',
-                        'Disabled' => 'danger',
-                        'expired' => 'gray',
+                        ucfirst('Active') => 'success',
+                        ucfirst('Inactive') => 'warning',
+                        ucfirst('Disabled') => 'danger',
+                        ucfirst('expired') => 'gray',
                     }),
             ])
             ->filters([

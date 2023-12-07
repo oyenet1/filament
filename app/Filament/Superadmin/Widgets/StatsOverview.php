@@ -27,7 +27,12 @@ class StatsOverview extends BaseWidget
                 ->description(getPercent($activeSchoolChart[count($activeSchoolChart) - 2], $activeSchoolChart[count($activeSchoolChart) - 1]) . ' since last year')
                 ->descriptionIcon(getDirectionIcon(...$active))
                 ->color($active[0] <= $active[1] ? 'success' : 'danger')
-                ->chart($schoolChart)
+                ->chart($activeSchoolChart),
+            Stat::make('Dummy Students', formatNumber(random_int(100, 4000)))
+                ->description('No of Active students')
+                ->descriptionIcon(getDirectionIcon(...$active))
+                ->color($active[0] <= $active[1] ? 'success' : 'danger')
+                ->chart([556, 52, 456, 78, 100, 234, 56, 890, 456, 234])
         ];
     }
 }
