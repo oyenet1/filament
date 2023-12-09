@@ -17,12 +17,12 @@ trait FilterBySchool
     {
         parent::boot();
 
-        self::creating(function ($model) {
-            $model->school_id =  auth()->user()->current_school_id;
-        });
-
-        // self::addGlobalScope(function (Builder $builder) {
-        //     $builder->where('School_id', auth()->user()->current_School_id);
+        // self::creating(function ($model) {
+        //     $model->school_id =  auth()->user()->school_id;
         // });
+
+        self::addGlobalScope(function (Builder $builder) {
+            $builder->where('school_id', auth()->user()->school_id);
+        });
     }
 }
