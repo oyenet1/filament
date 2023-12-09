@@ -16,7 +16,7 @@ use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 
-class School extends Model implements HasCurrentTenantLabel
+class School extends Model implements HasAvatar, HasCurrentTenantLabel
 {
     use HasFactory, SoftDeletes;
 
