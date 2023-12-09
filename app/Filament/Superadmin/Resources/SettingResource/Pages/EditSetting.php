@@ -18,9 +18,11 @@ class EditSetting extends EditRecord
 
     protected function getHeaderActions(): array
     {
+        // filament.superadmin.resources.settings.index
         return [
             Actions\DeleteAction::make()
-                ->visible(fn () => auth()->user()->hasRole('super-admin')),
+                ->visible(fn () => auth()->user()->hasRole('super-admin'))
+            // ->successRedirectUrl(route('posts.list')),
         ];
     }
 }

@@ -18,11 +18,13 @@ trait FilterBySchool
         parent::boot();
 
         // self::creating(function ($model) {
-        //     $model->school_id =  auth()->user()->school_id;
+        //     $model->school_id =  getCurrentTenant()->id;
         // });
 
-        self::addGlobalScope(function (Builder $builder) {
-            $builder->where('school_id', auth()->user()->school_id);
-        });
+        if (auth()->check()) {
+            self::addGlobalScope(function (Builder $builder) {
+                $builder->where('school_id', getCurrentTenant()->id);
+            });
+        }
     }
 }

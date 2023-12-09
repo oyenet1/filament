@@ -175,7 +175,12 @@ class SettingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar_url')->label('LOGO'),
+                Tables\Columns\ImageColumn::make('avatar_url')
+                    ->label('LOGO')
+                    ->default(asset('img/avatar.png'))
+                    ->extraAttributes([
+                        'class' => ' rounded-full aspect-square h-12 p-2 object-cover'
+                    ]),
                 Tables\Columns\TextColumn::make('code')
                     ->label("CODE")->sortable()
                     ->searchable(),
@@ -226,12 +231,18 @@ class SettingResource extends Resource
                     Action::make('Re Activate')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
-                        ->successNotificationTitle('School activated successfully')
                         ->requiresConfirmation()
                         ->action(function (School $record) {
                             $record->status = "Active";
                             $record->save();
+
+                            // Alert
+                            Notification::make()
+                                ->title('The school has been activated successfully.')
+                                ->success()
+                                ->send();
                         })
+
                         ->hidden(fn (School $school): bool => $school->status == 'Active'),
                     // Tables\Actions\DeleteAction::make()
                     //     ->successNotificationTitle('School deleted successfully'),
@@ -245,13 +256,38 @@ class SettingResource extends Resource
                         ->requiresConfirmation()
                         ->action(function (Collection $schools) {
                             $schools->each->update(['status' => 'Active']);
+
+                            // Alert
+                            Notification::make()
+                                ->title('Selected schools has been activated')
+                                ->success()
+                                ->send();
                         })->icon('heroicon-m-check-circle')
                         ->color('success')
+                        ->deselectRecordsAfterCompletion(),
+                    BulkAction::make('De-Activate Schools')
+                        ->label('De-Activate Schools')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $schools) {
+                            $schools->each->update(['status' => 'Inactive']);
+
+                            // Alert
+                            Notification::make()
+                                ->title('Selected schools has been made inactive')
+                                ->success()
+                                ->send();
+                        })->icon('heroicon-m-check-circle')
+                        ->color('warning')
                         ->deselectRecordsAfterCompletion(),
                     BulkAction::make('Disable Schools')
                         ->requiresConfirmation()
                         ->action(function (Collection $schools) {
                             $schools->each->update(['status' => 'Disabled']);
+                            // Alert
+                            Notification::make()
+                                ->title('Selected schools has been disabled')
+                                ->success()
+                                ->send();
                         })->icon('heroicon-m-exclamation-triangle')
                         ->color('danger')
                         ->deselectRecordsAfterCompletion(),

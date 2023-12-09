@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/tes', function () {
-    $relations = AcademicYear::find(16)->getAllRelations();
-
-    return $relations;
+Route::get('/superadmin/BIS2301/tes', function () {
+    // $relations = AcademicYear::find(16)->getAllRelations();
+    dd(getCurrentTenant());
+    // return $relations;
     // return DB::table('schools')
     //     ->where('status', 'active')
     //     ->selectRaw('YEAR(created_at) as year, COUNT(*) as total')

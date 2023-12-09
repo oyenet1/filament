@@ -9,6 +9,7 @@ use Filament\Tables\Table;
 use App\Models\AcademicYear;
 use Tables\Actions\SaveAction;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -50,7 +51,8 @@ class AcademicYearResource extends Resource
                 Forms\Components\DatePicker::make('end')
                     ->native(false),
                 Forms\Components\Toggle::make('is_current')
-                    ->required(),
+                    ->required()
+                    ->default(true),
             ]);
     }
 
@@ -89,14 +91,16 @@ class AcademicYearResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make()
                         ->successNotificationTitle('Acacdemic Year updated successfully'),
+                    Tables\Actions\RestoreAction::make()
+                        ->successNotificationTitle('Academic Year has been restored'),
                     Tables\Actions\DeleteAction::make()
                         ->successNotificationTitle('Academic archived and will be deleted after 30 days'),
                     Tables\Actions\ForceDeleteAction::make()
                         ->label('Erase Permanently')
-                        ->successNotificationTitle('Academic Year permanently deleted'),
-                    Tables\Actions\RestoreAction::make(),
+                        ->successNotificationTitle('Academic Year permanently deleted')
                 ])->button()
                     ->label('Actions')
+                    ->size(ActionSize::Small)
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
