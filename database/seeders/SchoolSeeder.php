@@ -19,7 +19,7 @@ class SchoolSeeder extends Seeder
             'code' => "bonifade",
             'phone' => "7065720177",
             'email' => "info@bonifade.com",
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled", "Active"])
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled", "Active"])
         ]);
         School::create([
             'name' => fake()->unique()->company() . " School",
@@ -97,7 +97,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(1, 4))
         ]);
         School::create([
@@ -106,7 +106,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(0, 1))
         ]);
         School::create([
@@ -115,7 +115,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(1, 5))
         ]);
         School::create([
@@ -124,7 +124,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(1, 6))
         ]);
         School::create([
@@ -133,7 +133,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(0, 1))
         ]);
         School::create([
@@ -142,7 +142,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(0, 1))
         ]);
         School::create([
@@ -151,7 +151,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(0, 3))
         ]);
         School::create([
@@ -160,7 +160,7 @@ class SchoolSeeder extends Seeder
             'code' => fake()->slug(2),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->unique()->companyEmail(),
-            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Inactive", "Disabled"]),
+            'status' => fake()->randomElement(["Active", "Active", "Disabled", "Active", "Inactive", "Active", "Disabled"]),
             'created_at' => now()->subYears(random_int(0, 3))
         ]);
     }

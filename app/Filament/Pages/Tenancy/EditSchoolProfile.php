@@ -128,7 +128,7 @@ class EditSchoolProfile extends EditTenantProfile
                                 ->nullable(),
                         ]),
                         Forms\Components\Wizard\Step::make('Logo')->schema([
-                            FileUpload::make('avatar_url')
+                            FileUpload::make('logo')
                                 ->label('LOGO')
                                 ->nullable()
                                 ->getUploadedFileNameForStorageUsing(

@@ -147,14 +147,14 @@ class SettingResource extends Resource
                                 ->nullable(),
                         ]),
                         Forms\Components\Wizard\Step::make('Logo')->schema([
-                            FileUpload::make('avatar_url')
+                            FileUpload::make('logo')
                                 ->label('LOGO')
                                 ->nullable()
                                 ->getUploadedFileNameForStorageUsing(
                                     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
                                         ->prepend('logo-'),
                                 )
-                                ->directory('school/logos')
+                                ->directory('/school/logos')
                                 ->image()
                                 ->imageEditor()
                                 ->imageEditorAspectRatios([
@@ -175,7 +175,7 @@ class SettingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar_url')
+                Tables\Columns\ImageColumn::make('logo')
                     ->label('LOGO')
                     ->default(asset('img/avatar.png'))
                     ->extraAttributes([
@@ -196,7 +196,7 @@ class SettingResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city.country.name')
-                    ->label("Location")
+                    ->label("LOCATION")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("COMMENCE ON")
@@ -205,6 +205,7 @@ class SettingResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label("STATUS")
                     ->badge()
+                    ->sortable()
                     ->extraAttributes(['class' => 'capitalize'])
                     ->color(fn (string $state): string => match ($state) {
                         ucfirst('Active') => 'success',

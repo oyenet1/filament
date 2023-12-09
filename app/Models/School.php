@@ -16,7 +16,7 @@ use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 
-class School extends Model implements HasAvatar, HasCurrentTenantLabel
+class School extends Model implements HasCurrentTenantLabel
 {
     use HasFactory, SoftDeletes;
 
@@ -30,7 +30,7 @@ class School extends Model implements HasAvatar, HasCurrentTenantLabel
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->avatar_url;
+        return $this->logo;
     }
 
     public function getCurrentTenantLabel(): string

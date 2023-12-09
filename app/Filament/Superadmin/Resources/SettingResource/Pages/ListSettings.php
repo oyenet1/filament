@@ -3,7 +3,9 @@
 namespace App\Filament\Superadmin\Resources\SettingResource\Pages;
 
 use Filament\Actions;
+use App\Models\School;
 use Filament\Resources\Components\Tab;
+use Filament\Support\Enums\IconPosition;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use App\Filament\Superadmin\Resources\SettingResource;
@@ -27,16 +29,25 @@ class ListSettings extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
+            'all' => Tab::make()
+                ->icon('heroicon-o-academic-cap')
+                ->iconPosition(IconPosition::After),
             'active' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "active")),
+                ->badge(fn () => School::where('status', "active")->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "active"))
+                ->badgeColor('success'),
             'inactive' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "inactive")),
+                ->badge(fn () => School::where('status', "inactive")->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "inactive"))
+                ->badgeColor('warning'),
             'expired' => Tab::make()
-
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "expired")),
+                ->badge(fn () => School::where('status', "expired")->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "expired"))
+                ->badgeColor('secondary'),
             'disabled' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "disabled")),
+                ->badge(fn () => School::where('status', "disabled")->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', "disabled"))
+                ->badgeColor('danger'),
         ];
     }
 }

@@ -52,7 +52,7 @@ class RegisterSchool extends RegisterTenant
                         ]),
                     \Filament\Forms\Components\Wizard\Step::make('Logo')
                         ->schema([
-                            FileUpload::make('avatar_url')
+                            FileUpload::make('logo')
                                 ->nullable()
                                 ->getUploadedFileNameForStorageUsing(
                                     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
@@ -66,7 +66,6 @@ class RegisterSchool extends RegisterTenant
                                     '1:1',
                                 ])
                                 ->maxSize(2014)
-                                ->avatar()
                                 ->circleCropper()
                                 ->imageResizeMode('cover'),
                         ])
