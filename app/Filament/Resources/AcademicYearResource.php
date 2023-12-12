@@ -62,6 +62,11 @@ class AcademicYearResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('terms_count')
+                    ->label('Terms')
+                    ->counts('terms')
+                    ->extraAttributes(['class' => 'text-center'])
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('start')
                     ->date()
                     ->sortable(),

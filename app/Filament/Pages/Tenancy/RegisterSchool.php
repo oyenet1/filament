@@ -44,6 +44,7 @@ class RegisterSchool extends RegisterTenant
 
                             TextInput::make('email')
                                 ->unique()
+                                ->email()
                                 ->required(),
 
                             TextInput::make('domain')

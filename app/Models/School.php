@@ -16,7 +16,7 @@ use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 
-class School extends Model implements HasAvatar, HasCurrentTenantLabel
+class School extends Model implements HasCurrentTenantLabel
 {
     use HasFactory, SoftDeletes;
 
@@ -26,11 +26,6 @@ class School extends Model implements HasAvatar, HasCurrentTenantLabel
     function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
-    }
-
-    public function getFilamentAvatarUrl(): ?string
-    {
-        return $this->logo;
     }
 
     public function getCurrentTenantLabel(): string
