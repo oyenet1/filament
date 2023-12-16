@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Filament\Panel;
 use App\Traits\HasOneProfile;
+use Filament\Models\Contracts\FilamentUser;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Traits\HasRoles;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable implements HasTenants
+class User extends Authenticatable implements HasTenants, FilamentUser
 {
     use HasRoles, HasApiTokens, HasFactory, SoftDeletes, HasOneProfile,  Notifiable;
 
@@ -76,6 +77,13 @@ class User extends Authenticatable implements HasTenants
     {
         return $this->schools->contains($tenant);
     }
+
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
+
 
     static function boot()
     {

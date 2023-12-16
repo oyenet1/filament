@@ -71,7 +71,6 @@ class RegisterSchool extends RegisterTenant
                                 ->imageResizeMode('cover'),
                         ])
                 ])->columnSpanFull()
-
             ]);
     }
 
